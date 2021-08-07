@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({callback}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -10,13 +10,18 @@ const Login = () => {
 
     const history = useHistory();
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        if(username=='admin')
-            history.push('/Admin');
-        else
-        history.push('/Employee');
+        const check = await callback({username: username, password: password });
+        
+        console.log(check);
+
+        if(check==='admin')
+            history.push('/admin');
+        else if(check==='employee')
+            history.push('/employee');
     };
+    
     return (
         <div>
             <form onSubmit={onSubmit}>

@@ -31,39 +31,92 @@ class UserController extends Controller
 
     public function addUser(Request $req)
     {
-        $user = new Employee;
+        $emp = new Employee;
 
-        // $user->id = $req->id;
-        // $user->name = $req->name;
-        // $user->dept = $req->dept;
+        $emp->id = $req->id;
+        $emp->ename = $req->ename;
+        $emp->cname = $req->cname;
+        $emp->contact = $req->contact;
+        $emp->username = $req->username;
+        $emp->password = $req->password;
 
-        $user->id = 10;
-        $user->name = "asf";
-        $user->dept = "saf";
+        $emp->save();
 
-        $user->save();
-
-        $users =  Employee::all();
+        $emp =  Employee::all();
         return response()->json($req);
     }
 
 
     public function addJob(Request $req)
     {
-        $user = new Employee;
+        $job = new Job;
 
-        // $user->id = $req->id;
-        // $user->name = $req->name;
-        // $user->dept = $req->dept;
+        $job->id = $req->id;
+        $job->cname = $req->cname;
+        $job->title = $req->title;
+        $job->location = $req->location;
+        $job->salary = $req->salary;
 
-        $user->id = 10;
-        $user->name = "asf";
-        $user->dept = "saf";
+        $job->save();
 
-        $user->save();
-
-        $users =  Employee::all();
+        $job =  Job::all();
         return response()->json($req);
     }
+
+
+    public function editUser(Request $req)
+    {
+        // $emp = Employee::where('id', $req->id)->first();
+
+        $emp = Employee::find($req->id);
+        $emp->ename = $req->ename;
+        $emp->cname = $req->cname;
+        $emp->contact = $req->contact;
+        $emp->username = $req->username;
+        $emp->password = $req->password;
+        
+        $emp->save();
+
+        $emp =  Employee::all();
+        return response()->json($req);
+    }
+
+    public function editJob(Request $req)
+    {
+
+        $job = Job::find($req->id);
+        $job->cname = $req->cname;
+        $job->title = $req->title;
+        $job->location = $req->location;
+        $job->salary = $req->salary;
+        
+        $job->save();
+
+        $job =  Job::all();
+        return response()->json($req);
+    }
+
+
+
+    public function deleteUser(Request $req)
+    {
+        $emp = Employee::find($req->id);
+        
+        $emp->delete();
+
+        $emp =  Employee::all();
+        return response()->json($req);
+    }
+
+    public function deleteJob(Request $req)
+    {
+        $job = Job::find($req->id);
+        
+        $job->delete();
+
+        $job =  Job::all();
+        return response()->json($req);
+    }
+
     
 }

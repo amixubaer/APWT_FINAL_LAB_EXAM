@@ -16,7 +16,7 @@ const AddJob = ({ status, callback }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (status=='add')
+        if (status==='add')
         {
             callback({ id: id, cname: cname, title: title, location: location, salary: salary });
         }

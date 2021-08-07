@@ -17,7 +17,7 @@ const AddUser = ({ status, callback }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (status=='add')
+        if (status==='add')
         {
             callback({ id: id, ename: ename, cname: cname, contact: contact, username: username, password: password });
         }

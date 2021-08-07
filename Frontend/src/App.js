@@ -5,9 +5,9 @@ import Navbar from "./components/Navbar";
 import Navhome from "./components/Navhome";
 import Navemployee from "./components/Navemployee";
 import AddUser from "./components/AddUser";
-import SearchEmployee from "./components/Navemployee";
+import AddJob from "./components/AddJob";
+import SearchEmployee from "./components/SearchEmployee";
 import Login from "./components/Login";
-import { users } from "./usersData";
 import { useFetch } from './components/useFetch';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -23,89 +23,118 @@ function App() {
     const [myjob, setJobs] = useState([]);
     const url2 = 'http://127.0.0.1:8000/api/joblist';
     useFetch(url2, setJobs);
+
+    const login = async (info) => { 
+
+        const axios = require('axios').default;
+
+        const type = await axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/login',
+            data:info,
+          });
+
+        const check = type.data;
+        
+        return check;
+    };
   
 
-    const addUsers = (newUser) => {
-        const url = 'http://127.0.0.1:8000/api/addUser';
+    const addUsers = (newUser) => { 
 
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-        })
+        const axios = require('axios').default;
 
-        // .then((response) => response.json())
-        // .then((data) => {
-        //     console.log("Success:", data);
-        // })
-        // .catch((error) => {
-        //     console.error("Error:", error);
-        // });
-        
-        console.log(newUser);
-        setUsers([...myuser, newUser]);   
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/addUser',
+            //data: JSON.stringify(newUser)
+            data:newUser,
+          });
+          setUsers([...myuser, newUser]);
+          console.log(newUser);
     };
+    
 
 
     const editUsers = (newUser) => {
+
         const data = myuser.filter((user) => user.id !== newUser.id);
         setUsers([...data, newUser]);
+
+        const axios = require('axios').default;
+
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/editUser',
+            data:newUser,
+          });
+        
     };
 
 
     const deleteCallback = (id) => {
+        const axios = require('axios').default;
+
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/deleteUser',
+            data:{
+                id:id,
+            }
+          });
+
         const data = myuser.filter((user) => user.id !== id);
         setUsers(data);
     };
 
     const searchUsers = (id) => {
-        const data = myuser.filter((user) => user.id == id);
+        const data = myuser.filter((user) => user.id === id.id);
         setUsers(data);
     };
 
 
 
-    const addJobs = (newUser) => {
-        const url = 'http://127.0.0.1:8000/api/addUser';
+    const addJobs = (newJob) => {
+        const axios = require('axios').default;
 
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-        })
-
-        // .then((response) => response.json())
-        // .then((data) => {
-        //     console.log("Success:", data);
-        // })
-        // .catch((error) => {
-        //     console.error("Error:", error);
-        // });
-        
-        console.log(newUser);
-        setUsers([...myuser, newUser]);   
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/addJob',
+            data:newJob,
+          });
+          setJobs([...myjob, newJob]);
+          console.log(newJob);
     };
 
 
-    const editJobs = (newUser) => {
-        const data = myuser.filter((user) => user.id !== newUser.id);
-        setUsers([...data, newUser]);
+    const editJobs = (newJob) => {
+
+        const axios = require('axios').default;
+
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/editJob',
+            data:newJob,
+          });
+
+        const data = myjob.filter((job) => job.id !== newJob.id);
+        setJobs([...data, newJob]);
+
     };
 
 
     const deleteCallbackJob = (id) => {
+
+        const axios = require('axios').default;
+
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/deleteJob',
+            data:{
+                id:id,
+            }
+          });
+
         const data = myjob.filter((job) => job.id !== id);
         setJobs(data);
     };
@@ -117,7 +146,7 @@ function App() {
             <Switch>
                 <Route exact path="/login">
                     <h2>Login Page</h2>
-                    <Login />
+                    <Login callback={login}/>
                 </Route>
                 
                 <Route exact path="/">
@@ -169,11 +198,11 @@ function App() {
                 </Route>
                 <Route path="/Createjob">
                     <Navemployee />
-                    <AddUser status="add" callback={addUsers} />
+                    <AddJob status="add" callback={addJobs} />
                 </Route>
                 <Route path="/editjob/:id">
                     <Navemployee />
-                    <AddUser status="edit" callback={editUsers} />
+                    <AddJob status="edit" callback={editJobs} />
                 </Route>
 
 

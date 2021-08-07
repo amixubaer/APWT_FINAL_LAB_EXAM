@@ -17,13 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware'=>['cors']] , function(){
-    Route::get('addUser', 'UserController@addUser')->name('addUser');
-});
 
 Route::get('userlist', 'UserController@UserList')->name('userlist');
+Route::POST('addUser', 'UserController@addUser')->name('addUser');
+Route::POST('editUser', 'UserController@editUser')->name('editUser');
+Route::POST('deleteUser', 'UserController@deleteUser')->name('deleteUser');
+
 Route::get('joblist', 'UserController@JobList')->name('joblist');
+Route::POST('addJob', 'UserController@addJob')->name('addJob');
+Route::POST('editJob', 'UserController@editJob')->name('editJob');
+Route::POST('deleteJob', 'UserController@deleteJob')->name('deleteJob');
 
-//Route::get('/login', 'LoginController@index')->name('login.index');
-
-//Route::get('deleteuser', 'App\Http\Controllers\Userlist@deleteUser');
+Route::POST('login', 'LoginController@index')->name('login.index');

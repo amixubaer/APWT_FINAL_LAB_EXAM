@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 
 const SearchEmployee = ({callback}) => {
@@ -8,15 +8,14 @@ const SearchEmployee = ({callback}) => {
     const history = useHistory();
     const onSubmit = (e) => {
         e.preventDefault();
-            callback({ id: id});
-            }
-            history.push('/UserList');
+            callback({ id: id}); 
+            history.push('/emplist');
     };
     return (
         <div>
             <form onSubmit={onSubmit}>
                 <label>
-                    User Name:
+                    ID:
                     <input type="number" name="id" value={id} onChange={(e) => setId(e.target.value)}
                     />
                 </label>
